@@ -33,7 +33,7 @@ def login_user(request):
             messages.info(request, 'Вход успешен')
             return redirect('dashboard')
         else:
-            messages.warning(request, 'Что-то пошло не так. Проверьте введённую информацию.')
+            messages.warning(request, 'Что-то пошло не так. Проверьте ввудённые данные.')
             return redirect('login')
     else:
         return render(request, 'users/login.html')
