@@ -4,8 +4,14 @@ from django.contrib import messages
 from .models import Ticket
 from .form import CreateTicketForm, UpdateTicketForm
 
-"""Для юзеров"""
+# детали заявки
+def ticket_details(request, pk):
+    ticket = Ticket.objects.get(pk=pk)
+    context = {'ticket':ticket}
+    return render(request, 'ticket/ticket_details.html', context)
 
+
+"""Для юзеров"""
 
 # Создане заявки
 def create_ticket(request):
@@ -80,3 +86,17 @@ def close_ticket(request,pk):
     ticket.save()
     messages.info(request, 'Заявка выполнена.')
     return redirect('ticket-queue')
+
+
+# Заявка в работе
+def workspace(request):
+    tickets = Ticket.objects.filter(assign_to=request.user, is_resolved=False)
+    context = {'tickets':tickets}
+    return render(request, 'ticket/workspace.html', context)
+
+
+# Все закрытые заявки
+def all_closed_tickets(request):
+    tickets = Ticket.objects.filter(assign_to=request.user, is_resolved=True)
+    context = {'tickets': tickets}
+    return render(request, 'ticket/all_closed_tickets.html', context)
