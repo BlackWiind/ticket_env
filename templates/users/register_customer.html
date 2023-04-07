@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="card mx-auto" style="width: 40rem;">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Страница регистрации</h5>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="usernameInput" class="form=label">Username</label>
+                        {% render_field form.username class="form-control" %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="passwordInput" class="form=label">Password</label>
+                        {% render_field form.password1 class="form-control" %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form=label">Confirm password</label>
+                        {% render_field form.password2 class="form-control" %}
+                    </div>
+
+                    <button class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+{% endblock content %}
+

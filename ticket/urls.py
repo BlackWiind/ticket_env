@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-urlspatterns = [
+urlpatterns = [
     path('ticket-details/<int:pk>/', views.ticket_details, name='ticket-details'),
     path('create-ticket/', views.create_ticket, name='create-ticket'),
     path('update-ticket/<int:pk>/', views.update_ticket, name='update=ticket'),

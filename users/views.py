@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from .form import RegisterCostumerForm
 
 
-def register_custumer(request):
+def register_customer(request):
     if request.method == 'POST':
         form = RegisterCostumerForm(request.POST)
         if form.is_valid():
@@ -19,7 +19,7 @@ def register_custumer(request):
     else:
         form = RegisterCostumerForm()
         context = {'form':form}
-        return render(request, 'user/register_customer.html', context)
+        return render(request, 'users/register_customer.html', context)
 
 
 def login_user(request):
@@ -33,7 +33,7 @@ def login_user(request):
             messages.info(request, 'Вход успешен')
             return redirect('dashboard')
         else:
-            messages.warning(request, 'Что-то пошло не так. Проверьте ввудённые данные.')
+            messages.warning(request, 'Что-то пошло не так. Проверьте введённые данные.')
             return redirect('login')
     else:
         return render(request, 'users/login.html')
