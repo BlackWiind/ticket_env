@@ -25,12 +25,12 @@ def create_ticket(request):
             messages.info(request, 'Заявка успешно создана.')
             return redirect('dashboard')
         else:
-            messages.warning(request, 'Что-то пошло не так. Проверьте ввудённые данные.')
+            messages.warning(request, 'Что-то пошло не так. Проверьте введённые данные.')
             return redirect('create-ticket')
     else:
         form = CreateTicketForm()
         context = {'form': form}
-        return request(request, 'ticket/create_ticket.html', context)
+        return render(request, 'ticket/create_ticket.html', context)
 
 
 # Изменение заявки
@@ -48,13 +48,13 @@ def update_ticket(request, pk):
     else:
         form = UpdateTicketForm()
         context = {'form': form}
-        return request(request, 'ticket/update_ticket.html', context)
+        return render(request, 'ticket/update_ticket.html', context)
 
 
 # Просмотр всех созданных заявок
 
 def all_tickets(request):
-    tickets = Ticket.objects.filter(created_by=request.user)
+    tickets = Ticket.objects.filter(created_by=request.user).order_by('-date_created')
     context = {'tickets': tickets}
     return render(request, 'ticket/all_tickets.html', context)
 
