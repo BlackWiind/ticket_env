@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mx-auto" style="width: 40rem;">
+            <div class="card-body">
+                <h5 class="card-title mb-3">{{ticket.title}}</h5>
+                <p><small>{{ticket.ticket_number}}ti</small></p>
+                <p class="card-text">{{ticket.description}}</p>
+
+                <div class="row">
+                    <div class="col">
+                        <b>Дата создания: </b> {{ticket.date_created}}
+                    </div>
+                    <div class="col">
+                        <b>Подана: </b> {{ticket.created_by}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {% if ticket.is_resolved %}
+                            <b>Статус: </b> <span class="badge bg-danger">Закрыта</span>
+                        {% else %}
+                            <b>Статус: </b> <span class="badge bg-success">Активна</span>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <b>Статус: </b> {{ticket.ticket_status}}
+                    </div>
+                </div><br>
+
+                <div class="row">
+                    <div class="col">
+                        <b>Assigned To: </b> {{ticket.assigned_to}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+            <div class="card mx-auto" style="width: 20rem;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Legacy {{ticket.created_by}}</h5>
+                    {% for ticket in tickets_legacy %}
+                    <p class="card-text">{{ticket.title}} <a href="{% url 'ticket-details' ticket.pk %}">(view)</a> </p>
+                    {% endfor %}
+
+                </div>
+            </div>
+    </div>
+</div>
+
+<br>
+{% if not ticket.is_resolved %}
+  {% if request.user.is_engineer %}
+      <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Confirm Resolution</a>
+      {% elif request.user.is_customer %}
+      <a href="{% url 'update-ticket' ticket.pk %}" class="btn btn-primary">Update ticket</a>
+  {% endif %}
+{% endif %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Закрыть заявку?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <a href="{% url 'close-ticket' ticket.pk %}" class="btn btn-primary">Подтвердить</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

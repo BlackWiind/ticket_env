@@ -10,7 +10,7 @@
                 <th scope="col">Ticket ID</th>
                 <th scope="col">Title</th>
                 <th scope="col">Created On</th>
-                <th scope="col">Assigned To</th>
+                <th scope="col">Created By</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </thead>
@@ -20,11 +20,7 @@
                     <td><small>{{ticket.ticket_number}}</small></td>
                     <td><small>{{ticket.title}}</small></td>
                     <td><small>{{ticket.date_created}}</small></td>
-                    {% if ticket.assigned_to %}
-                    <td><small>{{ticket.assigned_to}}</small></td>
-                    {% else %}
-                    <td><small>Ожидание</small></td>
-                    {% endif %}
+                    <td><small>{{ticket.created_by}}</small></td>
                     {% if ticket.ticket_status == 'Active' %}
                     <td><span class="badge bg-success">Active</span></td>
                     {% elif ticket.ticket_status == 'Pending' %}
@@ -32,7 +28,7 @@
                     {% elif ticket.ticket_status == 'Completed' %}
                     <td><span class="badge bg-danger">Completed</span></td>
                     {% endif %}
-                    <td><small><a href="{% url 'ticket-details' ticket.pk %}">Детали</a> </small></td>
+                    <td><small><a href="{% url 'accept-ticket' ticket.pk %}">Принять</a> </small></td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -3,14 +3,14 @@
 {% block content %}
 <div class="card mx-auto" style="width: 76rem;">
     <div class="card-body">
-        <h5 class="card-title mb-3">Ticket Queue</h5>
+        <h5 class="card-title mb-3">Закрытые заявки</h5>
 
         <table class="table table-bordered">
             <thead>
                 <th scope="col">Ticket ID</th>
                 <th scope="col">Title</th>
                 <th scope="col">Created On</th>
-                <th scope="col">Assigned To</th>
+                <th scope="col">Created By</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </thead>
@@ -20,11 +20,7 @@
                     <td><small>{{ticket.ticket_number}}</small></td>
                     <td><small>{{ticket.title}}</small></td>
                     <td><small>{{ticket.date_created}}</small></td>
-                    {% if ticket.assigned_to %}
-                    <td><small>{{ticket.assigned_to}}</small></td>
-                    {% else %}
-                    <td><small>Ожидание</small></td>
-                    {% endif %}
+                    <td><small>{{ticket.created_by}}</small></td>
                     {% if ticket.ticket_status == 'Active' %}
                     <td><span class="badge bg-success">Active</span></td>
                     {% elif ticket.ticket_status == 'Pending' %}

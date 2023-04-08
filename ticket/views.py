@@ -3,17 +3,25 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Ticket
 from .form import CreateTicketForm, UpdateTicketForm
+from users.models import User
+from django.contrib.auth.decorators import login_required
+
 
 # детали заявки
+@login_required
 def ticket_details(request, pk):
     ticket = Ticket.objects.get(pk=pk)
-    context = {'ticket':ticket}
+    users_tickets = User.objects.get(username=ticket.created_by)
+    tickets_legacy = users_tickets.created_by.all()
+    context = {'ticket': ticket, 'tickets_legacy': tickets_legacy}
     return render(request, 'ticket/ticket_details.html', context)
 
 
 """Для юзеров"""
 
+
 # Создане заявки
+@login_required
 def create_ticket(request):
     if request.method == 'POST':
         form = CreateTicketForm(request.POST)
@@ -34,25 +42,29 @@ def create_ticket(request):
 
 
 # Изменение заявки
+@login_required
 def update_ticket(request, pk):
     ticket = Ticket.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = UpdateTicketForm(request.POST, instance=ticket)
-        if form.is_valid():
-            form.save()
-            messages.info(request, 'Заявка успешно обнавлена.')
-            return redirect('dashboard')
+    if not ticket.is_resolved:
+        if request.method == 'POST':
+            form = UpdateTicketForm(request.POST, instance=ticket)
+            if form.is_valid():
+                form.save()
+                messages.info(request, 'Заявка успешно обнавлена.')
+                return redirect('dashboard')
+            else:
+                messages.warning(request, 'Что-то пошло не так. Проверьте ввeдённые данные.')
         else:
-            messages.warning(request, 'Что-то пошло не так. Проверьте ввудённые данные.')
-            # return redirect('create-ticket')
+            form = UpdateTicketForm(instance=ticket)
+            context = {'form': form}
+            return render(request, 'ticket/update_ticket.html', context)
     else:
-        form = UpdateTicketForm()
-        context = {'form': form}
-        return render(request, 'ticket/update_ticket.html', context)
+        messages.warning(request, 'Заявка закрыта. Изменения неаозможны.')
+        return redirect('dashboard')
 
 
 # Просмотр всех созданных заявок
-
+@login_required
 def all_tickets(request):
     tickets = Ticket.objects.filter(created_by=request.user).order_by('-date_created')
     context = {'tickets': tickets}
@@ -61,24 +73,29 @@ def all_tickets(request):
 
 """Для сотрудников"""
 
+
 # просмотр очетеди заявок
+@login_required
 def ticket_queue(request):
     tickets = Ticket.objects.filter(ticket_status='Pending')
-    context = {'tickets':tickets}
+    context = {'tickets': tickets}
     return render(request, 'ticket/ticket_queue.html', context)
 
+
 # Принтяие заявки из очереди
-def accept_ticket(request,pk):
+@login_required
+def accept_ticket(request, pk):
     ticket = Ticket.objects.get(pk=pk)
     ticket.assigned_to = request.user
     ticket.ticket_status = 'Active'
     ticket.save()
     messages.info(request, 'Заявка принята.')
-    return redirect('ticket-queue')
+    return redirect('workspace')
 
 
 # Закрытие заявки
-def close_ticket(request,pk):
+@login_required
+def close_ticket(request, pk):
     ticket = Ticket.objects.get(pk=pk)
     ticket.ticket_status = 'Completed'
     ticket.is_resolved = True
@@ -89,14 +106,16 @@ def close_ticket(request,pk):
 
 
 # Заявка в работе
+@login_required
 def workspace(request):
-    tickets = Ticket.objects.filter(assign_to=request.user, is_resolved=False)
-    context = {'tickets':tickets}
+    tickets = Ticket.objects.filter(assigned_to=request.user, is_resolved=False)
+    context = {'tickets': tickets}
     return render(request, 'ticket/workspace.html', context)
 
 
 # Все закрытые заявки
+@login_required
 def all_closed_tickets(request):
-    tickets = Ticket.objects.filter(assign_to=request.user, is_resolved=True)
+    tickets = Ticket.objects.filter(assigned_to=request.user, is_resolved=True)
     context = {'tickets': tickets}
     return render(request, 'ticket/all_closed_tickets.html', context)
