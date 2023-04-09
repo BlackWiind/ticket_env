@@ -19,34 +19,33 @@
                 </div>
 
                 <div class="row">
+
                     <div class="col">
-                        {% if ticket.is_resolved %}
-                            <b>Статус: </b> <span class="badge bg-danger">Закрыта</span>
-                        {% else %}
-                            <b>Статус: </b> <span class="badge bg-success">Активна</span>
+                        <b>Статус: </b>
+                        {% if ticket.ticket_status == 'Active' %}
+                            <td><span class="badge bg-success">Активна</span></td>
+                        {% elif ticket.ticket_status == 'Pending' %}
+                            <td><span class="badge bg-warning">Ожидание</span></td>
+                        {% elif ticket.ticket_status == 'Completed' %}
+                            <td><span class="badge bg-danger">Закрыта</span></td>
                         {% endif %}
                     </div>
                     <div class="col">
-                        <b>Статус: </b> {{ticket.ticket_status}}
+                        <b>Кем принята: </b> {{ticket.assigned_to}}
                     </div>
-                </div><br>
-
-                <div class="row">
-                    <div class="col">
-                        <b>Assigned To: </b> {{ticket.assigned_to}}
-                    </div>
+                    <div class="row">
                 </div>
+                </div><br>
             </div>
         </div>
     </div>
     <div class="col-md-6">
             <div class="card mx-auto" style="width: 20rem;">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Legacy {{ticket.created_by}}</h5>
+                    <h5 class="card-title mb-3">История заявок {{ticket.created_by}}</h5>
                     {% for ticket in tickets_legacy %}
-                    <p class="card-text">{{ticket.title}} <a href="{% url 'ticket-details' ticket.pk %}">(view)</a> </p>
+                    <p class="card-text">{{ticket.date_created}} <a href="{% url 'ticket-details' ticket.pk %}">(детали)</a> </p>
                     {% endfor %}
-
                 </div>
             </div>
     </div>
@@ -56,19 +55,18 @@
 {% if not ticket.is_resolved %}
   {% if request.user.is_engineer %}
       <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Confirm Resolution</a>
+          Закрыть заявку</a>
       {% elif request.user.is_customer %}
-      <a href="{% url 'update-ticket' ticket.pk %}" class="btn btn-primary">Update ticket</a>
+      <a href="{% url 'update-ticket' ticket.pk %}" class="btn btn-primary">Обновить заявку</a>
   {% endif %}
 {% endif %}
 
 
-<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Подтверждение.</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

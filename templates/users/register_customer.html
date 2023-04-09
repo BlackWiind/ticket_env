@@ -9,19 +9,27 @@
                 <form method="POST">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label for="usernameInput" class="form=label">Username</label>
+                        <label class="form=label">Имя пользователя</label>
                         {% render_field form.username class="form-control" %}
                     </div>
                     <div class="mb-3">
-                        <label for="passwordInput" class="form=label">Password</label>
+                        <label class="form=label">Фамилия</label>
+                        {% render_field form.last_name class="form-control" %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form=label">Имя</label>
+                        {% render_field form.first_name class="form-control" %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form=label">Пароль</label>
                         {% render_field form.password1 class="form-control" %}
                     </div>
                     <div class="mb-3">
-                        <label for="confirmPassword" class="form=label">Confirm password</label>
+                        <label class="form=label">Подтверждение пароля</label>
                         {% render_field form.password2 class="form-control" %}
                     </div>
 
-                    <button class="btn btn-primary">Submit</button>
+                    <button class="btn btn-primary">Регистрация</button>
                 </form>
             </div>
         </div>

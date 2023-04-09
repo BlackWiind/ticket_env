@@ -7,12 +7,12 @@
 
         <table class="table table-bordered">
             <thead>
-                <th scope="col">Ticket ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Created On</th>
-                <th scope="col">Created By</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">ID заявки</th>
+                <th scope="col">Название</th>
+                <th scope="col">Дата создания</th>
+                <th scope="col">Кем создана</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Действия</th>
             </thead>
             <tbody>
             {% for ticket in tickets %}
@@ -22,11 +22,11 @@
                     <td><small>{{ticket.date_created}}</small></td>
                     <td><small>{{ticket.created_by}}</small></td>
                     {% if ticket.ticket_status == 'Active' %}
-                    <td><span class="badge bg-success">Active</span></td>
+                    <td><span class="badge bg-success">Активна</span></td>
                     {% elif ticket.ticket_status == 'Pending' %}
-                    <td><span class="badge bg-warning">Pending</span></td>
+                    <td><span class="badge bg-warning">Ожидание</span></td>
                     {% elif ticket.ticket_status == 'Completed' %}
-                    <td><span class="badge bg-danger">Completed</span></td>
+                    <td><span class="badge bg-danger">Закрыта</span></td>
                     {% endif %}
                     <td><small><a href="{% url 'ticket-details' ticket.pk %}">Детали</a> </small></td>
                 </tr>
