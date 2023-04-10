@@ -39,16 +39,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-            <div class="card mx-auto" style="width: 20rem;">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">История заявок {{ticket.created_by}}</h5>
-                    {% for ticket in tickets_legacy %}
-                    <p class="card-text">{{ticket.date_created}} <a href="{% url 'ticket-details' ticket.pk %}">(детали)</a> </p>
-                    {% endfor %}
-                </div>
-            </div>
-    </div>
 </div>
 
 <br>

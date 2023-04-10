@@ -5,12 +5,12 @@
     <div class="card-body">
         <h5 class="card-title mb-3">Закрытые заявки</h5>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="sortedTable">
             <thead>
-                <th scope="col">ID заявки</th>
-                <th scope="col">Название</th>
-                <th scope="col">Дата создания</th>
-                <th scope="col">Кем создана</th>
+                <th scope="col" onclick="sortTable(0)">ID заявки</th>
+                <th scope="col" onclick="sortTable(1)">Название</th>
+                <th scope="col" onclick="sortTable(2)">Дата создания</th>
+                <th scope="col" onclick="sortTable(3)">Кем создана</th>
                 <th scope="col">Статус</th>
                 <th scope="col">Действия</th>
             </thead>
