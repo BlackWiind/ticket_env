@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from users.models import User
+from users.models import User,Department
 
 
 class Ticket(models.Model):
@@ -9,6 +9,15 @@ class Ticket(models.Model):
         ('Completed', 'Completed'),
         ('Pending', 'Pending'),
     )
+
+    type_choices = (
+        ('print', 'Принтер'),
+        ('computer', 'Компьютер'),
+        ('bars', 'БАРС'),
+        ('internet', 'Интернет'),
+        ('mounting', 'Установка оборудования'),
+    )
+
     ticket_number = models.UUIDField(default=uuid.uuid4)
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -18,6 +27,8 @@ class Ticket(models.Model):
     is_resolved = models.BooleanField(default=False)
     closed_date = models.DateTimeField(null=True, blank=True)
     ticket_status = models.CharField(max_length=20, choices=status_choices)
+    department = models.ForeignKey(Department, on_delete=models.PROTECT, null=True, blank=True)
+    ticket_type = models.CharField(max_length=30, choices=type_choices)
 
     def __str__(self):
         return self.title

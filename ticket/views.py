@@ -50,6 +50,7 @@ def create_ticket(request):
             ticket = form.save(commit=False)
             ticket.created_by = request.user
             ticket.ticket_status = 'Pending'
+            ticket.department = request.user.department
             ticket.save()
             messages.info(request, 'Заявка успешно создана.')
             return redirect('dashboard')
@@ -115,12 +116,16 @@ class All_Tickets(ListView):
 # просмотр очетеди заявок
 class Ticket_queue(ListView):
     model = Ticket
-    paginate_by = 5
+    paginate_by = 10
     template_name = 'ticket/ticket_queue.html'
     context_object_name = 'tickets'
 
     def get_queryset(self):
         return Ticket.objects.filter(ticket_status='Pending')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 # @login_required
 # def ticket_queue(request):

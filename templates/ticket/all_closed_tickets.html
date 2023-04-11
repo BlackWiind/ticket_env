@@ -7,7 +7,8 @@
 
         <table class="table table-bordered" id="sortedTable">
             <thead>
-                <th scope="col" onclick="sortTable(0)">ID заявки</th>
+                <th scope="col" onclick="sortTable(0)">Отделение</th>
+                <th scope="col" onclick="sortTable(0)">Тип</th>
                 <th scope="col" onclick="sortTable(1)">Название</th>
                 <th scope="col" onclick="sortTable(2)">Дата создания</th>
                 <th scope="col" onclick="sortTable(3)">Кем создана</th>
@@ -17,10 +18,11 @@
             <tbody>
             {% for ticket in tickets %}
                 <tr>
-                    <td><small>{{ticket.ticket_number}}</small></td>
+                    <td><small>{{ticket.department}}</small></td>
+                    <td><small>{{ticket.get_ticket_type_display}}</small></td>
                     <td><small>{{ticket.title}}</small></td>
                     <td><small>{{ticket.date_created}}</small></td>
-                    <td><small>{{ticket.created_by}}</small></td>
+                    <td><small>{{ticket.created_by.last_name}} {{ticket.created_by.first_name}}</small></td>
                     {% if ticket.ticket_status == 'Active' %}
                     <td><span class="badge bg-success">Активна</span></td>
                     {% elif ticket.ticket_status == 'Pending' %}

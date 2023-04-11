@@ -6,20 +6,26 @@
         <div class="card mx-auto" style="width: 40rem;">
             <div class="card-body">
                 <h5 class="card-title mb-3">{{ticket.title}}</h5>
-                <p><small>{{ticket.ticket_number}}ti</small></p>
+                <p><b>Тип: </b>
+                    <small>{{ticket.get_ticket_type_display}}</small></p>
                 <p class="card-text">{{ticket.description}}</p>
+
+                <div class="row">
+                    <div class="col">
+                        <b>Отделение: </b> {{ticket.department}}
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col">
                         <b>Дата создания: </b> {{ticket.date_created}}
                     </div>
                     <div class="col">
-                        <b>Подана: </b> {{ticket.created_by}}
+                        <b>Подана: </b> {{ticket.created_by.last_name}} {{ticket.created_by.first_name}}
                     </div>
                 </div>
 
                 <div class="row">
-
                     <div class="col">
                         <b>Статус: </b>
                         {% if ticket.ticket_status == 'Active' %}
@@ -31,7 +37,7 @@
                         {% endif %}
                     </div>
                     <div class="col">
-                        <b>Кем принята: </b> {{ticket.assigned_to}}
+                        <b>Кем принята: </b> {{ticket.assigned_to.last_name}} {{ticket.assigned_to.first_name}}
                     </div>
                     <div class="row">
                 </div>
@@ -46,9 +52,8 @@
   {% if request.user.is_engineer %}
       <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Закрыть заявку</a>
-      {% elif request.user.is_customer %}
-      <a href="{% url 'update-ticket' ticket.pk %}" class="btn btn-primary">Обновить заявку</a>
   {% endif %}
+      <a href="{% url 'update-ticket' ticket.pk %}" class="btn btn-primary">Обновить заявку</a>
 {% endif %}
 
 
