@@ -12,4 +12,5 @@ urlpatterns = [
     path('close-ticket/<int:pk>/', views.close_ticket, name='close-ticket'),
     path('workspace/', Workspace.as_view(), name='workspace'),
     path('all-closed-tickets/', All_Closed_Tickets.as_view(), name='all-closed-tickets'),
+    path('report/', views.report, name='report'),
 ]
