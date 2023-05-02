@@ -4,14 +4,12 @@ import io
 from django.http import HttpResponse
 from docxtpl import DocxTemplate
 
-from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import DetailView
 
 from .models import Ticket
 from .form import CreateTicketForm, UpdateTicketForm
-from users.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 
@@ -84,7 +82,7 @@ def update_ticket(request, pk):
             context = {'form': form}
             return render(request, 'ticket/update_ticket.html', context)
     else:
-        messages.warning(request, 'Заявка закрыта. Изменения неаозможны.')
+        messages.warning(request, 'Заявка закрыта. Изменения невозможны.')
         return redirect('dashboard')
 
 

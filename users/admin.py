@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User,Department
 
 
 class CustomUserAdmin(UserAdmin):
@@ -10,6 +10,7 @@ class CustomUserAdmin(UserAdmin):
             'Custom Field Heading',
             {
                 'fields': (
+                    'department',
                     'is_customer',
                     'is_engineer',
                 )
@@ -18,4 +19,10 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name',)
+    list_display_links = ('id', 'name',)
+
+
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Department, DepartmentAdmin)
